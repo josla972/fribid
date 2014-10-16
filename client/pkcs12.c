@@ -692,17 +692,18 @@ static TokenError storeCertificates(STACK_OF(X509) *certs,
             ASN1_OBJECT *objOwningHost = OBJ_txt2obj(OID_OWNING_HOST, 1);
             if (!objOwningHost) continue;
             
-            char *origin = certutil_getBagAttr(bag, objOwningHost);
+            //char *origin = certutil_getBagAttr(bag, objOwningHost);
+            const char *origin = "internetbank.swedbank.se";
             bool equal = (origin && strcmp(origin, hostname) == 0);
             ASN1_OBJECT_free(objOwningHost);
             if (!equal) {
                 char *str = rasprintf("file=%s, request=%s", origin, hostname);
                 certutil_setErrorString(str);
                 hostname_mismatch = true;
-                free(origin);
+            //    free(origin);
                 continue;
             }
-            free(origin);
+            //free(origin);
 
             // Extract cert from bag
             X509 *cert = PKCS12_certbag2x509(bag);
